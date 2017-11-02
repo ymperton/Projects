@@ -3,12 +3,26 @@ package com.company;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
 
 public class Cipher {
     private String cipherText;
     private static int languageLetterLength;
+
+    public void enterCipherText(String text) {
+        StringBuilder sb = new StringBuilder();
+        text = text.toUpperCase();
+        char letter;
+        for (int i = 0; i < text.length(); i++) {
+            letter = text.charAt(i);
+            if (letter >= 'A' && letter <= 'Z') {
+                sb.append(letter);
+            }
+        }
+        cipherText = sb.toString();
+    }
 
     static String decipher(String cipherText, int shift, int skip) {
         char letter;
@@ -167,5 +181,28 @@ public class Cipher {
         pT.setReadabilityScore(score);
         pT.setReadabilityErrorRate(errors);
         aryPossibleSentences.add(pT);
+    }
+
+    double[] createLetterFrequency() {
+        int textLength = cipherText.length();
+        int[] letterHistogram = createLetterHistogram();
+        double[] textLetterFrequency = new double[26];
+
+        for (int i = 0; i < textLetterFrequency.length; i++) {
+            textLetterFrequency[i] = letterHistogram[i] / (double) textLength * 100;
+        }
+
+        return textLetterFrequency;
+    }
+
+    //TODO: use streams
+    int[] createLetterHistogram() {
+        int[] letterHistogram = new int[26];
+        char letter;
+        for (int i = 0; i < cipherText.length(); i++) {
+            letter = cipherText.charAt(i);
+            letterHistogram[letter - 'A']++;
+        }
+        return letterHistogram;
     }
 }
