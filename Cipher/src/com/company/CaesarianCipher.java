@@ -1,5 +1,9 @@
 package com.company;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Comparator;
+
 public class CaesarianCipher extends Cipher implements Decipher {
     private String cipherText;
     private double[] englishLanguageLetterFrequency = {8.167, 1.492, 2.782, 4.253,
@@ -8,36 +12,66 @@ public class CaesarianCipher extends Cipher implements Decipher {
             1.974, 0.074};
 
 
-
     public CaesarianCipher() {
-
+        try {
+            createDictionary();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
+
     @Override
     public String decipher() {
+        ArrayList<CaesarianCipherPlainText> listOfPossiblePlainTexts = new ArrayList<>(26);
         double[] cipherTextLetterFrequency = createLetterFrequency();
 
-        //TODO create the 16 PlainTexts, within them their bit shift score, and then readablitiy score, so the calcualteLeterShift mehtod should deal with that.
+        //TODO create the 26 PlainTexts, within them their bit shift score, and then readablitiy score, so the calcualteLeterShift mehtod should deal with that.
 
-        int letterShift = calculateLetterShift(cipherTextLetterFrequency);
+
+        for (int shift = 0; shift < 26; shift++) {
+            CaesarianCipherPlainText pt = new CaesarianCipherPlainText(decipher(getCipherText(), shift, 1));
+
+            pt.setSumOfDiscrepancyScore(calculateSumOfDiscrepancyForShift(cipherTextLetterFrequency, shift));
+//            pt.setReadabilityScore(calculateReadabilityScore(pt.getPlainText()));
+
+            listOfPossiblePlainTexts.add(pt);
+        }
+
+        listOfPossiblePlainTexts.sort(CaesarianCipherPlainText::compareTo);
+        for (CaesarianCipherPlainText pt : listOfPossiblePlainTexts) {
+            System.out.println(pt.getSumOfDiscrepancyScore() + "\t" + pt.getReadabilityScore() + "\t" +pt.getPlainText());
+        }
+
+        System.out.println(calculateReadabilityScore(listOfPossiblePlainTexts.get(0).getPlainText()));
+
 
         return null;
     }
 
-    int calculateLetterShift(double[] textLetterFrequency) {
-        double[] sumOfLetterDiscrepencyPerShift = new double[26];
-        int indexOfLowestSumOfShiftDiscrepancy = 0;
-        double lowestSumOfShiftDiscrepancy = Double.MAX_VALUE;
-        for (int shift = 0; shift < 26; shift++) { //go through 26 shifts
-            double total = 0;
-            for (int percentCol = 0; percentCol < 26; percentCol++) { //will go through all the letters and create a running total.
-                total += Math.abs(textLetterFrequency[percentCol]
-                        - englishLanguageLetterFrequency[(percentCol + shift) % 26]); //add a discrepency
-            }
-            sumOfLetterDiscrepencyPerShift[shift] = total;
-            indexOfLowestSumOfShiftDiscrepancy = lowestSumOfShiftDiscrepancy < total ? indexOfLowestSumOfShiftDiscrepancy : shift;
-            System.out.println("shift: " + shift + ": sum: " + total);
+    private double calculateSumOfDiscrepancyForShift(double[] cipherTextLetterFrequency, int shift) {
+        double total = 0;
+        for (int percent = 0; percent < 26; percent++) { //will go through all the letters and create a running total.
+            total += Math.abs(englishLanguageLetterFrequency[percent]
+                    - cipherTextLetterFrequency[(percent + shift) % 26]); //add a discrepency
         }
-        
-        return indexOfLowestSumOfShiftDiscrepancy;
+        return total;
     }
+
+//    int calculateLetterShift(double[] textLetterFrequency) {
+//        double[] sumOfLetterDiscrepencyPerShift = new double[26];
+//        int indexOfLowestSumOfShiftDiscrepancy = 0;
+//        double lowestSumOfShiftDiscrepancy = Double.MAX_VALUE;
+//        for (int shift = 0; shift < 26; shift++) { //go through 26 shifts
+//            double total = 0;
+//            for (int percent = 0; percent < 26; percent++) { //will go through all the letters and create a running total.
+//                total += Math.abs(textLetterFrequency[percent]
+//                        - englishLanguageLetterFrequency[(percent + shift) % 26]); //add a discrepency
+//            }
+//            sumOfLetterDiscrepencyPerShift[shift] = total;
+//            indexOfLowestSumOfShiftDiscrepancy = lowestSumOfShiftDiscrepancy < total ? indexOfLowestSumOfShiftDiscrepancy : shift;
+//            System.out.println("shift: " + shift + ": sum: " + total);
+//        }
+//
+//        return indexOfLowestSumOfShiftDiscrepancy;
+//    }
 }

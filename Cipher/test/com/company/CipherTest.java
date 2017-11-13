@@ -19,7 +19,7 @@ class CipherTest {
     @Test
     void testCreateLetterFrequency() {
         Cipher c = new Cipher();
-        c.enterCipherText("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        c.enterCipherTextAndClean("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         double[] actual = c.createLetterFrequency();
 
         for (int i = 0; i < actual.length; i++) {
@@ -30,7 +30,7 @@ class CipherTest {
     @Test
     void testCreateLetterHistogram() {
         Cipher c = new Cipher();
-        c.enterCipherText("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        c.enterCipherTextAndClean("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         int[] actual = c.createLetterHistogram();
 
         for (int i = 0; i < actual.length; i++) {
