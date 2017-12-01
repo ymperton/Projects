@@ -13,39 +13,27 @@ public class CaesarianCipher extends Cipher implements Decipher {
 
 
     public CaesarianCipher() {
-        try {
-            createDictionary();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    }
+    public CaesarianCipher(String cipherText) {
+        enterCipherTextAndClean(cipherText);
     }
 
     @Override
-    public String decipher() {
-        ArrayList<CaesarianCipherPlainText> listOfPossiblePlainTexts = new ArrayList<>(26);
+    public PlainText decipher() {
+        ArrayList<CaesarianCipherPlainText> listOfPossiblePlainTexts = new ArrayList<>(ENGLISH_ALPHABET_LENGTH);
         double[] cipherTextLetterFrequency = createLetterFrequency();
 
-        //TODO create the 26 PlainTexts, within them their bit shift score, and then readablitiy score, so the calcualteLeterShift mehtod should deal with that.
-
-
-        for (int shift = 0; shift < 26; shift++) {
-            CaesarianCipherPlainText pt = new CaesarianCipherPlainText(decipher(getCipherText(), shift, 1));
-
+        //Create the 26 possibilities and calculate how close they are to the english letter frequency
+        for (int shift = 0; shift < ENGLISH_ALPHABET_LENGTH; shift++) {
+            CaesarianCipherPlainText pt = new CaesarianCipherPlainText(decipher(getCipherText(), shift, 1), shift);
             pt.setSumOfDiscrepancyScore(calculateSumOfDiscrepancyForShift(cipherTextLetterFrequency, shift));
-//            pt.setReadabilityScore(calculateReadabilityScore(pt.getPlainText()));
-
             listOfPossiblePlainTexts.add(pt);
         }
 
+        //sort from lowest score to highest
         listOfPossiblePlainTexts.sort(CaesarianCipherPlainText::compareTo);
-        for (CaesarianCipherPlainText pt : listOfPossiblePlainTexts) {
-            System.out.println(pt.getSumOfDiscrepancyScore() + "\t" + pt.getReadabilityScore() + "\t" +pt.getPlainText());
-        }
 
-        System.out.println(calculateReadabilityScore(listOfPossiblePlainTexts.get(0).getPlainText()));
-
-
-        return null;
+        return listOfPossiblePlainTexts.get(0);
     }
 
     private double calculateSumOfDiscrepancyForShift(double[] cipherTextLetterFrequency, int shift) {

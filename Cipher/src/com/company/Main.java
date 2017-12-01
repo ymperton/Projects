@@ -5,21 +5,6 @@ import java.io.FileNotFoundException;
 public class Main {
 
     public static void main(String[] args) {
-//        Cipher c = new Cipher();
-//        try {
-//            Cipher.createDictionary();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        Cipher.placeSpacesInStringWithout("", "ILOVEYOUSOMUCHANDIDONOTKNOWWHATIWOULDDOWITHOUTYOU",
-//                0, 0);
-
-//        for (PlainText pT : Cipher.aryPossibleSentences) {
-//            if (pT.getReadabilityScore() > 0)
-//            System.out.println(pT.getPlainText()
-//                    + "\t\tSc: " + pT.getReadabilityScore()
-//                    + "\tEr" + pT.getReadabilityErrorRate());
-//        }
 
 //        CaesarianCipher cc = new CaesarianCipher();
 //        cc.enterCipherTextAndClean("XtwnlmystbNrtsymjxzgbfdgfhpytqfsijwxfkyjwrdifyjbjrjyfyjcfhyqdfsibjbfqpjiytOjwzxfqjrhfkjbm" +
@@ -48,12 +33,26 @@ public class Main {
 //                "nsltzygjybjjszxFyknwxynybfxfgnybjnwigjhfzxjxmjxutpjajwdqtbfsinybfxmfwiytmjfwmjwfyknwxygzyymfybjsyfbfdKtw" +
 //                "xtrjwjfxtsNljyymfyxmjnxfsnsywtajwyXmjxajwdrzhmnsytQnrzijnPtijxmfxxmjbfxxfdnslymfyxmjkjqygfiymfyxmjbtsymf" +
 //                "ajfqjfwsnslhqfxxnstsjtkymjsjcyxjrjxyjwxfsixmjbfxrjsyntsnslmtbnybnqqgjhtsxnijwjiqxmrf");
-//
-//        cc.decipher();
 
-        Cipher c = new Cipher();
-        c.enterCipherTextAndClean("thedog");
-        System.out.println(c.calculateReadabilityScore(c.getCipherText()));
+//        PlainText pt = cc.decipher();
+//        System.out.println(pt);
+long start = System.currentTimeMillis();
+        PolyalphabeticCipher pc = new PolyalphabeticCipher();
+        pc.enterCipherTextAndClean("CSPEUYWXSUEAFQDLCOISZKCZW QBWYPYJRVUCEDPSIPIHYPSNHW IRWHVAKGRHMRQNACSOCNOHRKX " +
+                "VUEWYHSDFKJCSVZFRWFABVYOV UWGKKOVCXSWRBIQDSFUNIPARR ZKXCNOEGSKMPOJQKTNHSNHPMP OHJSYOCWPFXDMQNOVOKRBPVVH " +
+                "VPKWBJLNSLPYERGMDOVVZKWBK WEJWSQPCWWRIRWZBLXKYJRJRS AMQZUHXXCNKYDDMUWBKHNXMOO PLWKMEBXWYLYRSKRQSMJOERDL " +
+                "CNHYHBIUAFVSKVROWEWSQCPVR WSAYOHYLXOGJUKRWCQAZWWRER SVFDSQDEBROVCBKWEJKHYPSZG YRRGBFZRSUHCEJREQXSVQLYGH " +
+                "RZQQYNPCKKSWZQHZZKWRDSIHG IQLCBHKFMQHYHBJYPVVUCWFQZ ZWRMLGHYDDMUWGKKOSLAAFVDP WWGBLXKRDSHXOWRECEVLYRIOP " +
+                "EOWFAKRVCLWERFQDOLKKZIDLG OKRVRIPBWIVDHYPSRVGIJHWEW RIKERUOOACSSEWDSEAHWRYHQD SXRDENESTHYJQWZDRXELZWXRD " +
+                "WSOVZLGMQDGYHQSRICIHLYRPV RWCAFWHJKOAYJHVGSLMLSZWNS COBKUOJJAQKSYSPHMFQWIDKFZ ZKWYXZVWYWNABUPYVCSSXRDML " +
+                "PCTDWTSOHVDXIAGGKHBRMGOPD BSSJRNKSGFSOJRFIPPKFKYYPO CWWKOGJUNKSGFSSEWLCDWGKWR IWOHRUDIBPCTOYWCOCNHVIDPO");
+
+        pc.decipher();
+
+        long end = System.currentTimeMillis();
+        long time = (end - start) / 1000;
+        System.out.println("time: " + time);
+        System.out.println("Done");
 
     }
 }

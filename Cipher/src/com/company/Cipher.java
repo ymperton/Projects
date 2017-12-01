@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class Cipher {
     private String cipherText;
     private static int languageLetterLength;
+    static final int ENGLISH_ALPHABET_LENGTH = 26;
 
     public void enterCipherTextAndClean(String text) {
         StringBuilder sb = new StringBuilder();
@@ -32,23 +33,22 @@ public class Cipher {
             letter = cipherText.charAt(i);
             letter -= shift;
             if (letter > 'Z') {
-                letter -= 26;
+                letter -= ENGLISH_ALPHABET_LENGTH;
             }
             if (letter < 'A') {
-                letter += 26;
+                letter += ENGLISH_ALPHABET_LENGTH;
             }
             plainText.append(letter);
         }
 
         return plainText.toString();
     }
-    //thedogjumped
 
     static ArrayList<String> aryDictionary = new ArrayList<>();
     static final int ERROR_MAX = 2;
+    int max = 0;
 
     void createDictionary() throws FileNotFoundException {
-//        ArrayList<String> wordList = new ArrayList<>();
         Scanner scn = new Scanner(new File("wordsEN.txt"));
         while (scn.hasNext()) {
             aryDictionary.add(scn.next().toUpperCase());
@@ -93,8 +93,6 @@ public class Cipher {
         return ary.toArray(new String[ary.size()]);
     }
 
-    int max = 0;
-
     int placeSpacesInStringWithout(String lettersFiguredOut,
                                    String lettersNotUsed,
                                    int score, int errors) {
@@ -135,7 +133,7 @@ public class Cipher {
 //            System.out.println("<" + wordToBeTested + "> will not be a word, but will have to go in none the less");
             placeSpacesInStringWithout(lettersFiguredOut + "_" + wordToBeTested,
                     lettersNotUsed.substring(wordToBeTested.length()),
-                    score,// += wordToBeTested.length(),
+                    score,
                     errors + 1);
 
         }
@@ -165,7 +163,7 @@ public class Cipher {
     double[] createLetterFrequency() {
         int textLength = cipherText.length();
         int[] letterHistogram = createLetterHistogram();
-        double[] textLetterFrequency = new double[26];
+        double[] textLetterFrequency = new double[ENGLISH_ALPHABET_LENGTH];
 
         for (int i = 0; i < textLetterFrequency.length; i++) {
             textLetterFrequency[i] = letterHistogram[i] / (double) textLength * 100;
@@ -175,7 +173,7 @@ public class Cipher {
 
     //TODO: use streams
     int[] createLetterHistogram() {
-        int[] letterHistogram = new int[26];
+        int[] letterHistogram = new int[ENGLISH_ALPHABET_LENGTH];
         char letter;
         for (int i = 0; i < cipherText.length(); i++) {
             letter = cipherText.charAt(i);
