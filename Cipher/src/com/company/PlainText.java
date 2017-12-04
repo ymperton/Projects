@@ -4,6 +4,8 @@ package com.company;
 //    double getScore();
 //}
 
+import java.util.ArrayList;
+
 class PlainText {
     private String plainText;
 
@@ -24,13 +26,13 @@ class PlainText {
     }
 }
 
-class CaesarianCipherPlainText extends PlainText implements Comparable<CaesarianCipherPlainText> {
+class CaesarianPlainText extends PlainText implements Comparable<CaesarianPlainText> {
     private int letterShift;
     private int readabilityScore;
     private int readabilityErrorRate;
     private double sumOfDiscrepancyScore;
 
-    public CaesarianCipherPlainText(String plainText, int shift) {
+    public CaesarianPlainText(String plainText, int shift) {
         super(plainText);
         this.letterShift = shift;
     }
@@ -55,14 +57,53 @@ class CaesarianCipherPlainText extends PlainText implements Comparable<Caesarian
         return sumOfDiscrepancyScore;
     }
 
+    public int getLetterShift() {
+        return letterShift;
+    }
+
     @Override
-    public int compareTo(CaesarianCipherPlainText that) {
+    public int compareTo(CaesarianPlainText that) {
         return (int) (this.getScore() - that.getScore());
     }
 
     @Override
     public String toString() {
         return "Shift: " + letterShift + "\n" + super.toString();
+    }
+}
+
+class PolyalphabeticPlainText extends PlainText implements Comparable<PolyalphabeticPlainText> {
+    String key;
+    private String plainText;
+    double letterFrequencyPerLetterScore;
+
+    public PolyalphabeticPlainText(char[] key, String plainText, double letterFrequencyPerLetterScore) {
+        this.key = convertKeyArrayToString(key);
+        this.plainText = plainText;
+        this.letterFrequencyPerLetterScore = letterFrequencyPerLetterScore;
+    }
+
+    private String convertKeyArrayToString(char[] ary) {
+        String key = "";
+        for (char letter : ary) {
+            key += letter;
+        }
+        return key;
+    }
+
+    public double getScore() {
+        return letterFrequencyPerLetterScore;
+    }
+
+    @Override
+    public int compareTo(PolyalphabeticPlainText that) {
+        return (int) (this.getScore() - that.getScore());
+    }
+
+    @Override
+    public String toString() {
+        return "Key: " + key +
+                "\nMessage: " + plainText;
     }
 }
 

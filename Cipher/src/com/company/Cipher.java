@@ -11,6 +11,7 @@ public class Cipher {
     private String cipherText;
     private static int languageLetterLength;
     static final int ENGLISH_ALPHABET_LENGTH = 26;
+    static final int ENGLISH_ALPHABET_START = 'A';
 
     public void enterCipherTextAndClean(String text) {
         StringBuilder sb = new StringBuilder();

@@ -47,7 +47,8 @@ long start = System.currentTimeMillis();
                 "WSOVZLGMQDGYHQSRICIHLYRPV RWCAFWHJKOAYJHVGSLMLSZWNS COBKUOJJAQKSYSPHMFQWIDKFZ ZKWYXZVWYWNABUPYVCSSXRDML " +
                 "PCTDWTSOHVDXIAGGKHBRMGOPD BSSJRNKSGFSOJRFIPPKFKYYPO CWWKOGJUNKSGFSSEWLCDWGKWR IWOHRUDIBPCTOYWCOCNHVIDPO");
 
-        pc.decipher();
+        PlainText pt = pc.decipher();
+        System.out.println(pt.toString());
 
         long end = System.currentTimeMillis();
         long time = (end - start) / 1000;

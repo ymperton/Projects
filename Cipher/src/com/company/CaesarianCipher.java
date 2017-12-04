@@ -14,26 +14,36 @@ public class CaesarianCipher extends Cipher implements Decipher {
 
     public CaesarianCipher() {
     }
+
     public CaesarianCipher(String cipherText) {
         enterCipherTextAndClean(cipherText);
     }
 
     @Override
-    public PlainText decipher() {
-        ArrayList<CaesarianCipherPlainText> listOfPossiblePlainTexts = new ArrayList<>(ENGLISH_ALPHABET_LENGTH);
+    public CaesarianPlainText decipher() {
+        ArrayList<CaesarianPlainText> listOfPossiblePlainTexts = new ArrayList<>(ENGLISH_ALPHABET_LENGTH);
+
+        //create all 26 permutations and score them
+        listOfPossiblePlainTexts = getAllPossibleCaesarianPlainTexts();
+
+        return listOfPossiblePlainTexts.get(0);
+    }
+
+    //Create the 26 possibilities and calculate how close they are to the english letter frequency
+    public ArrayList<CaesarianPlainText> getAllPossibleCaesarianPlainTexts() {
+        ArrayList<CaesarianPlainText> listOfPossiblePlainTexts = new ArrayList<>(ENGLISH_ALPHABET_LENGTH);
         double[] cipherTextLetterFrequency = createLetterFrequency();
 
-        //Create the 26 possibilities and calculate how close they are to the english letter frequency
         for (int shift = 0; shift < ENGLISH_ALPHABET_LENGTH; shift++) {
-            CaesarianCipherPlainText pt = new CaesarianCipherPlainText(decipher(getCipherText(), shift, 1), shift);
+            CaesarianPlainText pt = new CaesarianPlainText(decipher(getCipherText(), shift, 1), shift);
             pt.setSumOfDiscrepancyScore(calculateSumOfDiscrepancyForShift(cipherTextLetterFrequency, shift));
             listOfPossiblePlainTexts.add(pt);
         }
 
         //sort from lowest score to highest
-        listOfPossiblePlainTexts.sort(CaesarianCipherPlainText::compareTo);
+        listOfPossiblePlainTexts.sort(CaesarianPlainText::compareTo);
 
-        return listOfPossiblePlainTexts.get(0);
+        return listOfPossiblePlainTexts;
     }
 
     private double calculateSumOfDiscrepancyForShift(double[] cipherTextLetterFrequency, int shift) {
@@ -44,6 +54,7 @@ public class CaesarianCipher extends Cipher implements Decipher {
         }
         return total;
     }
+
 
 //    int calculateLetterShift(double[] textLetterFrequency) {
 //        double[] sumOfLetterDiscrepencyPerShift = new double[26];
